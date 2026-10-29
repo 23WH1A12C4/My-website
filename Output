@@ -1,0 +1,28 @@
+===== LOG-BASED INTRUSION DETECTION SYSTEM =====
+
+Log: 10:00,192.168.1.10,admin,FAIL
+WARNING: Failed login attempt!
+----------------------------------------
+
+Log: 10:01,192.168.1.10,admin,FAIL
+WARNING: Failed login attempt!
+----------------------------------------
+
+Log: 10:02,192.168.1.10,admin,FAIL
+WARNING: Failed login attempt!
+SECURITY ALERT!
+Suspicious IP: 192.168.1.10
+Username: admin
+Failed attempts: 3
+Possible brute-force attack detected!
+----------------------------------------
+
+Log: 10:04,192.168.1.10,admin,SUCCESS
+Login successful.
+ALERT: Successful login after repeated failures!
+
+===== DETECTION SUMMARY =====
+Suspicious IP: 192.168.1.10 | Total failed attempts: 4
+Suspicious IP: 192.168.1.30 | Total failed attempts: 3
+
+Log analysis completed.
