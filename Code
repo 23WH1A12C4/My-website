@@ -1,0 +1,80 @@
+
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        String[] logs = {
+            "10:00,192.168.1.10,admin,FAIL",
+            "10:01,192.168.1.10,admin,FAIL",
+            "10:02,192.168.1.10,admin,FAIL",
+            "10:03,192.168.1.10,admin,FAIL",
+            "10:04,192.168.1.10,admin,SUCCESS",
+            "10:05,192.168.1.20,user1,SUCCESS",
+            "10:06,192.168.1.30,root,FAIL",
+            "10:07,192.168.1.30,root,FAIL",
+            "10:08,192.168.1.30,root,FAIL"
+        };
+
+        Map<String, Integer> failedAttempts = new HashMap<>();
+
+        System.out.println("===== LOG-BASED INTRUSION DETECTION SYSTEM =====");
+        System.out.println();
+
+        for (String log : logs) {
+
+            String[] data = log.split(",");
+
+            String time = data[0];
+            String ip = data[1];
+            String username = data[2];
+            String status = data[3];
+
+            System.out.println("Log: " + log);
+
+            if (status.equals("FAIL")) {
+
+                int count = failedAttempts.getOrDefault(ip, 0) + 1;
+                failedAttempts.put(ip, count);
+
+                System.out.println("WARNING: Failed login attempt!");
+
+                if (count >= 3) {
+                    System.out.println("SECURITY ALERT!");
+                    System.out.println("Suspicious IP: " + ip);
+                    System.out.println("Username: " + username);
+                    System.out.println("Failed attempts: " + count);
+                    System.out.println("Possible brute-force attack detected!");
+                }
+
+            } else if (status.equals("SUCCESS")) {
+
+                System.out.println("Login successful.");
+
+                if (failedAttempts.getOrDefault(ip, 0) >= 3) {
+                    System.out.println(
+                        "ALERT: Successful login after repeated failures!"
+                    );
+                }
+            }
+
+            System.out.println("----------------------------------------");
+        }
+
+        System.out.println("\n===== DETECTION SUMMARY =====");
+
+        for (String ip : failedAttempts.keySet()) {
+            int count = failedAttempts.get(ip);
+
+            if (count >= 3) {
+                System.out.println(
+                    "Suspicious IP: " + ip +
+                    " | Total failed attempts: " + count
+                );
+            }
+        }
+
+        System.out.println("\nLog analysis completed.");
+    }
+}
